@@ -50,14 +50,9 @@ App = {
     createTask: async () => {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
-        console.log("crate")
         App.setLoading(true)
         const content = $('#newTask').val()
-        console.log("conetent", content)
-        console.log(App, "app")
         const data = await App.todoList.createTask(content, { from: account })
-        console.log(data, "count")
-
         window.location.reload()
     },
 
@@ -91,16 +86,14 @@ App = {
     },
 
     renderTasks: async () => {
+        console.log("renderTasks")
         // Load the total task count from the blockchain
         const taskCount = await App.todoList.taskCount()
         const $taskTemplate = $('.taskTemplate')
-        console.log("render", taskCount)
         // Render out each task with a new task template
         for (var i = 1; i <= taskCount; i++) {
-            console.log(i, "i")
             // Fetch the task data from the blockchain
             const task = await App.todoList.tasks(i)
-            console.log(task, "task")
             const taskId = task[0].toNumber()
             const taskContent = task[1]
             const taskCompleted = task[2]
